@@ -16,15 +16,13 @@ const transactions = [
 ];
 
 export function getDailyPortfolioValues() 
-// const getDailyPortfolioValues =() =>
 {
     const result = []
     let totalBitcoin = 0
     let dailyValue = 0
 
-    // Creates clone of prices array that can be mutated without mutating origin array. 
+    // Creates clone of prices and transactions array that can be mutated without mutating origin array. 
     let temporaryPricesList = prices.slice()
-
     let temporaryTransactionsList = transactions.slice()
 
     // Loops to check the 7 days.
@@ -52,9 +50,8 @@ export function getDailyPortfolioValues()
     return result;
 }
 
+
 // Subfunction that gets daily Bitcoin value.
-
-
 const getDailyBitcoinValue = (day, value, temporaryPricesList) => {
     let dailyValue = value
 
@@ -66,8 +63,6 @@ const getDailyBitcoinValue = (day, value, temporaryPricesList) => {
         // If statement that breaks if the day of the price change is more that the day indicated.
         // Can only be done as the prices are ordered intially.
         // Will allow the function to skip some unneeded iterations.
-        // By using splice, it removes the object that was already used, meaning that future iterations
-        // will be quicker.
 
         if (pricesList[y].effectiveDate.getDate() > day){
             break
@@ -76,16 +71,19 @@ const getDailyBitcoinValue = (day, value, temporaryPricesList) => {
             indexToRemove.push(y)
         }
     }
+
+    // Removes objects that have already been checked and used.
     if (indexToRemove.length > 0){
         for (let i = 0; i < indexToRemove.length; i++){
             pricesList.splice(indexToRemove[0], 1)
         }
     }
+
     return dailyValue
 }
 
-// Subfunction that gets total of bitcoin in porfolio.
 
+// Subfunction that gets total of bitcoin in porfolio.
 const getCurrentBitcoinTotal = (day, currentBitcoin, temporaryTransactionsList) => {
     let totalBitcoin = currentBitcoin
 
@@ -94,7 +92,10 @@ const getCurrentBitcoinTotal = (day, currentBitcoin, temporaryTransactionsList) 
     let indexToRemove = []
 
     for (let x = 0; x < Object.keys(transactionsList).length; x ++){
-
+        // If statement that breaks if the day of the price change is more that the day indicated.
+        // Can only be done as the prices are ordered intially.
+        // Will allow the function to skip some unneeded iterations.
+        
         if (transactionsList[x].effectiveDate.getDate() > day){
             break
         } else if (transactionsList[x].effectiveDate.getDate() == day){
@@ -102,12 +103,13 @@ const getCurrentBitcoinTotal = (day, currentBitcoin, temporaryTransactionsList) 
             indexToRemove.push(x)
         }
     }
+
+    //Removes objects that have already been checked and used.
     if (indexToRemove.length > 0){
         for (let i = 0; i < indexToRemove.length; i++){
             transactionsList.splice(indexToRemove[0], 1)
         }
     }
+
     return totalBitcoin
 }
-
-console.log(getDailyPortfolioValues())
