@@ -41,20 +41,24 @@ const getDailyPortfolioValues =() =>
             }
         }
 
+        // Keeps a running total of bitcoin in the account.
+        // Current issue with adding floats together and getting a random decimal which is messing with the
+        // tests.
+
         for (let x = 0; x < Object.keys(transactions).length; x ++){
             if (transactions[x].effectiveDate.getDate() == i){
                 totalBitcoin += transactions[x].value
-                console.log(totalBitcoin, i)
+                // console.log(totalBitcoin, i)
             }
         }
 
         result.push({
             effectiveDate: new Date(2021, 8, i, 1, 0, 0),
-            value: (dailyValue * totalBitcoin)
+            value: parseFloat(dailyValue * totalBitcoin).toFixed(5)
         })
     }
 
-    // return result;
+    return result;
 }
 
 console.log(getDailyPortfolioValues())
