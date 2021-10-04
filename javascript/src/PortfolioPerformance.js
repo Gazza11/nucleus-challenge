@@ -19,8 +19,8 @@ const transactions = [
 //     return [];
 // }
 
-// export function getDailyPortfolioValues() 
-const getDailyPortfolioValues =() =>
+export function getDailyPortfolioValues() 
+// const getDailyPortfolioValues =() =>
 {
     const result = []
     let totalBitcoin = 0
@@ -54,7 +54,7 @@ const getDailyPortfolioValues =() =>
 
         result.push({
             effectiveDate: new Date(2021, 8, i, 1, 0, 0),
-            value: parseFloat(dailyValue * totalBitcoin).toFixed(5)
+            value: parseFloat((dailyValue * totalBitcoin).toFixed(5))
         })
     }
 
