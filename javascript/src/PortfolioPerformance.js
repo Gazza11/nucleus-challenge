@@ -35,22 +35,12 @@ export function getDailyPortfolioValues()
         // As they reassign on change, and are sorted from earliest to latest, any price change on the same day
         // will be set to the most recent.
 
-        for (let y = 0; y < Object.keys(prices).length; y ++){
-            if (prices[y].effectiveDate.getDate() == i){
-                dailyValue = prices[y].price
-            }
-        }
+        dailyValue = getDailyBitcoinValue(i, dailyValue)
 
         // Keeps a running total of bitcoin in the account.
-        // Current issue with adding floats together and getting a random decimal which is messing with the
-        // tests.
 
-        for (let x = 0; x < Object.keys(transactions).length; x ++){
-            if (transactions[x].effectiveDate.getDate() == i){
-                totalBitcoin += transactions[x].value
-                // console.log(totalBitcoin, i)
-            }
-        }
+        totalBitcoin = getCurrentBitcoinTotal(i, totalBitcoin)
+
 
         result.push({
             effectiveDate: new Date(2021, 8, i, 1, 0, 0),
@@ -61,4 +51,26 @@ export function getDailyPortfolioValues()
     return result;
 }
 
-console.log(getDailyPortfolioValues())
+const getDailyBitcoinValue = (day, value) => {
+    let dailyValue = value
+
+    for (let y = 0; y < Object.keys(prices).length; y ++){
+        if (prices[y].effectiveDate.getDate() == day){
+            dailyValue = prices[y].price
+        }
+    }
+    return dailyValue
+}
+
+const getCurrentBitcoinTotal = (day, currentBitcoin) => {
+    let totalBitcoin = currentBitcoin
+
+    for (let x = 0; x < Object.keys(transactions).length; x ++){
+        if (transactions[x].effectiveDate.getDate() == day){
+            totalBitcoin += transactions[x].value
+        }
+    }
+    return totalBitcoin
+}
+
+// console.log(getDailyPortfolioValues())
