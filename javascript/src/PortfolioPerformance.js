@@ -25,7 +25,7 @@ export function getDailyPortfolioValues()
     let temporaryPricesList = prices.slice()
     let temporaryTransactionsList = transactions.slice()
 
-    // Loops to check the 7 days.
+    // Loops to check the 7 days. 
     for (let i = 1; i < 8; i++){
 
         // Check prices for daily change, want to have a constant daily value. As if it doesn't change,
@@ -43,7 +43,7 @@ export function getDailyPortfolioValues()
 
         result.push({
             effectiveDate: new Date(2021, 8, i, 1, 0, 0),
-            value: parseFloat((dailyValue * totalBitcoin).toFixed(5))
+            value: parseFloat((dailyValue * totalBitcoin).toFixed(5)) // Had to add parse and toFixed as adding floats to floats and getting random decimal places.
         })
     }
 
@@ -57,27 +57,27 @@ const getDailyBitcoinValue = (day, value, temporaryPricesList) => {
 
     let pricesList = temporaryPricesList
 
-    let indexToRemove = []
+    let indexToRemove = 0
 
     for (let y = 0; y < Object.keys(pricesList).length; y ++){
+
         // If statement that breaks if the day of the price change is more that the day indicated.
         // Can only be done as the prices are ordered intially.
         // Will allow the function to skip some unneeded iterations.
-
         if (pricesList[y].effectiveDate.getDate() > day){
             break
         } else if (pricesList[y].effectiveDate.getDate() == day){
             dailyValue = pricesList[y].price
-            indexToRemove.push(y)
+            indexToRemove ++
         }
     }
 
     // Removes objects that have already been checked and used.
-    if (indexToRemove.length > 0){
-        for (let i = 0; i < indexToRemove.length; i++){
-            pricesList.splice(indexToRemove[0], 1)
+    if (indexToRemove){
+        for (let i = 0; i < indexToRemove; i++){
+            pricesList.splice(0, 1)
         }
-    }
+    }  
 
     return dailyValue
 }
@@ -89,25 +89,25 @@ const getCurrentBitcoinTotal = (day, currentBitcoin, temporaryTransactionsList) 
 
     let transactionsList = temporaryTransactionsList
 
-    let indexToRemove = []
+    let indexToRemove = 0
 
     for (let x = 0; x < Object.keys(transactionsList).length; x ++){
+
         // If statement that breaks if the day of the price change is more that the day indicated.
         // Can only be done as the prices are ordered intially.
         // Will allow the function to skip some unneeded iterations.
-        
         if (transactionsList[x].effectiveDate.getDate() > day){
             break
         } else if (transactionsList[x].effectiveDate.getDate() == day){
             totalBitcoin += transactionsList[x].value
-            indexToRemove.push(x)
+            indexToRemove ++
         }
     }
 
     //Removes objects that have already been checked and used.
-    if (indexToRemove.length > 0){
-        for (let i = 0; i < indexToRemove.length; i++){
-            transactionsList.splice(indexToRemove[0], 1)
+    if (indexToRemove){
+        for (let i = 0; i < indexToRemove; i++){
+            transactionsList.splice(0, 1)
         }
     }
 
