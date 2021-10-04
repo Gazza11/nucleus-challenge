@@ -15,10 +15,6 @@ const transactions = [
     { effectiveDate: new Date(2021, 8, 7, 9, 0, 0), value: 0.1 },
 ];
 
-// export function getDailyPortfolioValues() {
-//     return [];
-// }
-
 export function getDailyPortfolioValues() 
 // const getDailyPortfolioValues =() =>
 {
@@ -51,26 +47,40 @@ export function getDailyPortfolioValues()
     return result;
 }
 
+// Subfunction that gets daily Bitcoin value.
+
+
 const getDailyBitcoinValue = (day, value) => {
     let dailyValue = value
 
     for (let y = 0; y < Object.keys(prices).length; y ++){
-        if (prices[y].effectiveDate.getDate() == day){
+        // If statement that breaks if the day of the price change is more that the day indicated.
+        // Can only be done as the prices are ordered intially.
+        // Will allow the function to skip some unneeded iterations.
+
+        if (prices[y].effectiveDate.getDate() > day){
+            break
+        } else if (prices[y].effectiveDate.getDate() == day){
             dailyValue = prices[y].price
         }
     }
     return dailyValue
 }
 
+// Subfunction that gets total of bitcoin in porfolio.
+
 const getCurrentBitcoinTotal = (day, currentBitcoin) => {
     let totalBitcoin = currentBitcoin
 
     for (let x = 0; x < Object.keys(transactions).length; x ++){
-        if (transactions[x].effectiveDate.getDate() == day){
+
+        if (transactions[x].effectiveDate.getDate() > day){
+            break
+        } else if (transactions[x].effectiveDate.getDate() == day){
             totalBitcoin += transactions[x].value
         }
     }
     return totalBitcoin
 }
 
-// console.log(getDailyPortfolioValues())
+console.log(getDailyPortfolioValues())
