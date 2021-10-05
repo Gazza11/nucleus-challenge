@@ -16,7 +16,6 @@ const transactions = [
 ];
 
 export function getDailyPortfolioValues()
-// const getDailyPortfolioValues = () =>
 {
     const result = []
     let totalBitcoin = 0
@@ -45,7 +44,7 @@ export function getDailyPortfolioValues()
 
         totalBitcoin = getCurrentBitcoinTotal(i, totalBitcoin, temporaryTransactionsList)
 
-
+        // Adds a new object with date and value to the array of results.
         result.push({
             effectiveDate: new Date(2021, 8, i, 1, 0, 0),
             value: parseFloat((dailyValue * totalBitcoin).toFixed(5)) // Had to add parse and toFixed as adding floats to floats and getting random decimal places.
@@ -89,10 +88,6 @@ const getDailyBitcoinValue = (day, value, temporaryPricesList) => {
 
     return dailyValue
 }
-
-
-
-
 
 
 // Subfunction that gets total of bitcoin in porfolio.
@@ -155,5 +150,3 @@ const findLatestDate = () => {
 
     return latestDate
 }
-
-console.log(getDailyPortfolioValues())
