@@ -15,18 +15,21 @@ const transactions = [
     { effectiveDate: new Date(2021, 8, 7, 9, 0, 0), value: 0.1 },
 ];
 
-export function getDailyPortfolioValues() 
+export function getDailyPortfolioValues()
+// const getDailyPortfolioValues = () =>
 {
     const result = []
     let totalBitcoin = 0
     let dailyValue = 0
+
+    const earlisetDate = findEarliestDate()
 
     // Creates clone of prices and transactions array that can be mutated without mutating origin array. 
     let temporaryPricesList = prices.slice()
     let temporaryTransactionsList = transactions.slice()
 
     // Loops to check the 7 days. 
-    for (let i = 1; i < 8; i++){
+    for (let i = earlisetDate; i < 8; i++){
 
         // Check prices for daily change, want to have a constant daily value. As if it doesn't change,
         // I need the the previous one.
@@ -49,6 +52,9 @@ export function getDailyPortfolioValues()
 
     return result;
 }
+
+
+
 
 
 // Subfunction that gets daily Bitcoin value.
@@ -83,6 +89,10 @@ const getDailyBitcoinValue = (day, value, temporaryPricesList) => {
 }
 
 
+
+
+
+
 // Subfunction that gets total of bitcoin in porfolio.
 const getCurrentBitcoinTotal = (day, currentBitcoin, temporaryTransactionsList) => {
     let totalBitcoin = currentBitcoin
@@ -113,3 +123,32 @@ const getCurrentBitcoinTotal = (day, currentBitcoin, temporaryTransactionsList) 
 
     return totalBitcoin
 }
+
+
+
+
+
+// Function to find the earliest date from the data sets. This only works as they are sorted prior.
+const findEarliestDate = () => {
+    let earliestDate = prices[0].effectiveDate.getDate()
+
+    if(earliestDate > transactions[0].effectiveDate.getDate()){
+        earliestDate = transactions[0].effectiveDate.getDate()
+    }
+
+    return earliestDate
+}
+
+
+// Function to find the latest date from the data set. This only works as the are sorted prior.
+const findLatestDate = () => {
+    let latestDate
+    latestDate = (prices.reverse())[0].effectiveDate.getDate()
+
+    return latestDate
+}
+
+// console.log(findEarliestDate())
+// console.log(findLatestDate())
+
+console.log(getDailyPortfolioValues())
