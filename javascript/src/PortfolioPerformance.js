@@ -24,12 +24,14 @@ export function getDailyPortfolioValues()
 
     const earlisetDate = findEarliestDate()
 
+    const latestDate = findLatestDate() + 1
+
     // Creates clone of prices and transactions array that can be mutated without mutating origin array. 
     let temporaryPricesList = prices.slice()
     let temporaryTransactionsList = transactions.slice()
 
     // Loops to check the 7 days. 
-    for (let i = earlisetDate; i < 8; i++){
+    for (let i = earlisetDate; i < latestDate; i++){
 
         // Check prices for daily change, want to have a constant daily value. As if it doesn't change,
         // I need the the previous one.
@@ -142,13 +144,16 @@ const findEarliestDate = () => {
 
 // Function to find the latest date from the data set. This only works as the are sorted prior.
 const findLatestDate = () => {
-    let latestDate
-    latestDate = (prices.reverse())[0].effectiveDate.getDate()
+    let tempPriceList = prices.slice().reverse()
+    let tempTransactionList = transactions.slice().reverse()
+
+    let latestDate = tempPriceList[0].effectiveDate.getDate()
+
+    if(latestDate < tempTransactionList[0].effectiveDate.getDate()){
+        latestDate = tempTransactionList[0].effectiveDate.getDate()
+    }
 
     return latestDate
 }
-
-// console.log(findEarliestDate())
-// console.log(findLatestDate())
 
 console.log(getDailyPortfolioValues())
