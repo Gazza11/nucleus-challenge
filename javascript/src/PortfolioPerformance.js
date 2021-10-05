@@ -23,14 +23,14 @@ export function getDailyPortfolioValues()
 
     const earlisetDate = findEarliestDate()
 
-    const latestDate = findLatestDate() + 1
+    const latestDate = findLatestDate()
 
     // Creates clone of prices and transactions array that can be mutated without mutating origin array. 
     let temporaryPricesList = prices.slice()
     let temporaryTransactionsList = transactions.slice()
 
     // Loops to check the 7 days. 
-    for (let i = earlisetDate; i < latestDate; i++){
+    for (let i = earlisetDate; i < (latestDate + 1); i++){
 
         // Check prices for daily change, want to have a constant daily value. As if it doesn't change,
         // I need the the previous one.
@@ -44,6 +44,7 @@ export function getDailyPortfolioValues()
 
         totalBitcoin = getCurrentBitcoinTotal(i, totalBitcoin, temporaryTransactionsList)
         
+        // Sets the date to be used in the object, adds a zero if required to match desired date format. Dynamically created to avoid issues with numbers over 9.
         let date = i
         if(i < 10){
             date = "0" + i 
@@ -52,7 +53,7 @@ export function getDailyPortfolioValues()
         // Adds a new object with date and value to the array of results.
         result.push({
             effectiveDate: `2021-09-${date}`,
-            value: parseFloat((dailyValue * totalBitcoin).toFixed(5)) // Had to add parse and toFixed as adding floats to floats and getting random decimal places.
+            value: parseFloat((dailyValue * totalBitcoin).toFixed(5)) // Had to add parse and toFixed as adding floats to floats was adding random decimal places to value.
         })
     }
 
