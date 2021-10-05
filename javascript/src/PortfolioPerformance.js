@@ -43,10 +43,15 @@ export function getDailyPortfolioValues()
         // Keeps a running total of bitcoin in the account.
 
         totalBitcoin = getCurrentBitcoinTotal(i, totalBitcoin, temporaryTransactionsList)
+        
+        let date = i
+        if(i < 10){
+            date = "0" + i 
+        }
 
         // Adds a new object with date and value to the array of results.
         result.push({
-            effectiveDate: new Date(2021, 8, i, 1, 0, 0),
+            effectiveDate: `2021-09-${date}`,
             value: parseFloat((dailyValue * totalBitcoin).toFixed(5)) // Had to add parse and toFixed as adding floats to floats and getting random decimal places.
         })
     }
